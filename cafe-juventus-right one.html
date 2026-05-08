@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAFE JUVENTUS — We Dream In Black And White</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:  #080808;
+  --white:  #f8f8f4;
+  --gold:   #a8a8a8;
+  --gold-lt:#d0d0d0;
+  --gold-dk:#707070;
+  --gray:   #181818;
+  --gray2:  #242424;
+  --muted:  #888;
+  /* Stripe width — exactly matching the Juve jersey in the image */
+  --sw: 120px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+.cursor {
+  position: fixed; width: 10px; height: 10px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .25s, height .25s, background .25s;
+}
+.cursor.big {
+  width: 36px; height: 36px;
+  background: rgba(168,168,168,.12);
+}
+
+/* ══════════════════════════════════════
+   THE STRIPE — vertical, equal width
+   exactly like Juventus FC jersey
+══════════════════════════════════════ */
+.stripe-bg {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--white) 0,
+    var(--white) var(--sw),
+    var(--black) var(--sw),
+    var(--black) calc(var(--sw) * 2)
+  );
+}
+
+/* Gold divider line */
+.gold-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.gold-bar {
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold) 20%, var(--gold-lt) 50%, var(--gold) 80%, transparent 100%);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 1000; height: 68px;
+  background: rgba(8,8,8,.96);
+  backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem;
+}
+nav::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem; letter-spacing: .22em;
+  color: var(--white); text-decoration: none;
+  display: flex; align-items: center; gap: 14px;
+}
+/* Badge: two vertical stripes, Juve style, with gold border */
+.badge {
+  width: 38px; height: 38px;
+  display: flex; overflow: hidden;
+  border: 1px solid var(--gold);
+  flex-shrink: 0;
+}
+.badge-l { flex:1; background:var(--white); display:flex; align-items:center; justify-content:center; }
+.badge-r { flex:1; background:var(--black); display:flex; align-items:center; justify-content:center;
+  border-left: 1px solid var(--gold); }
+.badge-l span { color:var(--black); font-family:'Bebas Neue',sans-serif; font-size:.7rem; }
+.badge-r span { color:var(--white); font-family:'Bebas Neue',sans-serif; font-size:.7rem; }
+
+.nav-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .7rem; letter-spacing: .3em;
+  color: var(--gold); text-transform: uppercase;
+  font-style: italic; font-weight: 300;
+}
+
+.nav-links { display:flex; list-style:none; }
+.nav-links li a {
+  display:block; padding:0 1rem; height:68px; line-height:68px;
+  color: rgba(248,248,244,.55); text-decoration:none;
+  font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; font-weight:400;
+  position:relative; transition:color .2s;
+}
+.nav-links li a::after {
+  content:''; position:absolute; bottom:0; left:1rem; right:1rem;
+  height:1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform:scaleX(0); transition:transform .3s;
+}
+.nav-links li a:hover { color: var(--white); }
+.nav-links li a:hover::after { transform:scaleX(1); }
+
+.nav-cta {
+  background: transparent !important;
+  border: 1px solid var(--gold) !important;
+  color: var(--gold) !important;
+  padding: 0 1.4rem !important; font-weight:400 !important;
+  transition: background .25s, color .25s !important;
+  margin-left: .4rem;
+}
+.nav-cta:hover { background: var(--gold) !important; color: var(--black) !important; }
+.nav-cta::after { display:none !important; }
+
+.hamburger {
+  display:none; flex-direction:column; gap:5px;
+  background:none; border:none; cursor:none; padding:4px;
+}
+.hamburger span { width:24px; height:1px; background:var(--gold); display:block; }
+
+/* ── GENERAL ── */
+section { padding: 110px 0; position: relative; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 3rem; }
+
+.section-eyebrow {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .72rem; letter-spacing: .38em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: .8rem; font-style: italic; font-weight: 300;
+  display: flex; align-items: center; gap: 1rem;
+}
+.section-eyebrow::before {
+  content: ''; width: 28px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem,5.5vw,5.5rem);
+  line-height: .95; letter-spacing: .04em;
+}
+
+h1, h2 { font-family: 'Bebas Neue', sans-serif; letter-spacing: .05em; }
+h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; letter-spacing: .06em; }
+
+/* ══════════════════════════════════════
+   HERO — full stripe background
+══════════════════════════════════════ */
+#home {
+  min-height: 100vh; padding-top: 68px;
+  position: relative; overflow: hidden;
+  display: flex; align-items: stretch;
+}
+
+/* The full jersey stripe IS the hero background */
+.hero-stripes {
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--white) 0,
+    var(--white) var(--sw),
+    var(--black) var(--sw),
+    var(--black) calc(var(--sw) * 2)
+  );
+}
+
+/* Dark gradient overlay — left side dark for text, fades right */
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(8,8,8,.97) 0%,
+    rgba(8,8,8,.88) 38%,
+    rgba(8,8,8,.55) 60%,
+    rgba(8,8,8,.15) 80%,
+    transparent 100%
+  );
+}
+
+/* Subtle gold vignette at bottom */
+.hero-vignette {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 180px;
+  background: linear-gradient(0deg, rgba(168,168,168,.04), transparent);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative; z-index: 2;
+  display: flex; align-items: center;
+  min-height: calc(100vh - 68px); width: 100%;
+  padding: 4rem 3rem;
+  max-width: 1200px; margin: 0 auto;
+}
+
+.hero-content { max-width: 600px; }
+
+.hero-kicker {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .78rem; letter-spacing: .45em; text-transform: uppercase;
+  color: var(--gold); font-style: italic; font-weight: 300;
+  margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 1.2rem;
+}
+.hero-kicker::before, .hero-kicker::after {
+  content: ''; flex: 1; max-width: 40px; height: 1px;
+  background: var(--gold); opacity: .6;
+}
+
+.hero-h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 8.5vw, 9rem);
+  line-height: .88; letter-spacing: .02em;
+  margin-bottom: 1.8rem;
+}
+.hero-h1 .outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(248,248,244,.35);
+}
+.hero-h1 .gold-word {
+  color: var(--gold);
+}
+
+.hero-sub {
+  font-size: .95rem; color: rgba(248,248,244,.55);
+  line-height: 1.85; max-width: 420px;
+  margin-bottom: 2.5rem;
+  border-left: 1px solid var(--gold);
+  padding-left: 1.2rem;
+}
+
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: .6rem;
+  padding: .9rem 2.2rem;
+  font-size: .68rem; letter-spacing: .25em; text-transform: uppercase;
+  font-weight: 400; font-family: 'DM Sans', sans-serif;
+  text-decoration: none; transition: all .28s; border: none; cursor: none;
+}
+.btn-gold {
+  background: var(--gold); color: var(--black);
+}
+.btn-gold:hover { background: var(--gold-lt); }
+.btn-ghost {
+  background: transparent; color: var(--white);
+  border: 1px solid rgba(168,168,168,.4);
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Hero scroll indicator */
+.hero-scroll {
+  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+  z-index: 2; display: flex; flex-direction: column; align-items: center; gap: .6rem;
+}
+.hero-scroll span {
+  font-size: .58rem; letter-spacing: .35em; text-transform: uppercase;
+  color: var(--gold); font-family: 'Cormorant Garamond', serif; font-style: italic;
+}
+.scroll-line {
+  width: 1px; height: 50px;
+  background: linear-gradient(180deg, var(--gold), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { opacity: .3; } 50% { opacity: 1; }
+}
+
+/* Hero right: floating stripe card */
+.hero-badge-card {
+  position: absolute; right: 3rem; bottom: 4rem; z-index: 3;
+  border: 1px solid var(--gold);
+  padding: 1.4rem 2rem;
+  background: rgba(8,8,8,.8);
+  backdrop-filter: blur(8px);
+  text-align: center;
+}
+.hero-badge-card::before {
+  content: '';
+  position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px;
+  border: 1px solid rgba(168,168,168,.2);
+  pointer-events: none;
+}
+.hbc-label { font-size: .58rem; letter-spacing: .35em; text-transform: uppercase; color: var(--gold); font-style: italic; font-family: 'Cormorant Garamond', serif; }
+.hbc-main  { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: .18em; margin-top: .3rem; }
+.hbc-sub   { font-size: .62rem; color: var(--muted); letter-spacing: .15em; text-transform: uppercase; margin-top: .2rem; }
+
+/* ══════════════════════════════════════
+   ABOUT STRIP
+══════════════════════════════════════ */
+.about-strip {
+  position: relative; overflow: hidden;
+  /* Stripe background with dark overlay */
+}
+.about-strip::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--white) 0, var(--white) var(--sw),
+    var(--black) var(--sw), var(--black) calc(var(--sw)*2)
+  );
+}
+.about-strip::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(8,8,8,.82);
+}
+.about-strip-inner {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 4rem; padding: 3.5rem 3rem;
+  max-width: 1200px; margin: 0 auto; flex-wrap: wrap;
+}
+.about-stat { text-align: center; flex: 1; min-width: 120px; }
+.about-stat-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem;
+  letter-spacing: .05em; color: var(--gold); line-height: 1;
+}
+.about-stat-label {
+  font-size: .62rem; letter-spacing: .28em; text-transform: uppercase;
+  color: rgba(248,248,244,.45); margin-top: .4rem;
+}
+.about-divider { width: 1px; height: 60px; background: rgba(168,168,168,.2); flex-shrink: 0; }
+
+/* ══════════════════════════════════════
+   PAGE HEADER
+══════════════════════════════════════ */
+.page-header {
+  padding-bottom: 3rem; margin-bottom: 4rem;
+  position: relative;
+}
+.page-header::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+.page-header-inner {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+}
+.page-count {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .75rem; letter-spacing: .25em; color: var(--gold);
+  font-style: italic; text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════
+   COFFEE
+══════════════════════════════════════ */
+#coffee { background: var(--black); }
+
+.coffee-category { margin-bottom: 4.5rem; }
+.cat-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .72rem; letter-spacing: .35em; text-transform: uppercase;
+  color: var(--gold); font-style: italic; font-weight: 300;
+  padding-bottom: .8rem; margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(168,168,168,.18);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cat-label span { color: rgba(248,248,244,.3); font-style: normal; font-size: .65rem; }
+
+.coffee-grid {
+  display: grid; grid-template-columns: repeat(auto-fill,minmax(270px,1fr));
+  gap: 1px; background: rgba(168,168,168,.08);
+}
+.coffee-card {
+  background: var(--black); padding: 2rem 2rem 2rem;
+  position: relative; transition: background .3s; overflow: hidden;
+}
+/* Gold top line on hover */
+.coffee-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0); transition: transform .4s;
+}
+.coffee-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(168,168,168,.04) 0%, transparent 60%);
+  opacity: 0; transition: opacity .3s;
+}
+.coffee-card:hover { background: var(--gray); }
+.coffee-card:hover::before { transform: scaleX(1); }
+.coffee-card:hover::after { opacity: 1; }
+
+.c-icon { font-size: 1.4rem; margin-bottom: 1rem; filter: grayscale(1) brightness(.9); }
+.c-name {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.45rem;
+  letter-spacing: .06em; margin-bottom: .5rem; color: var(--white);
+}
+.c-desc { font-size: .8rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.4rem; }
+.c-price {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;
+  letter-spacing: .12em; color: var(--gold); font-weight: 400;
+}
+
+/* ══════════════════════════════════════
+   FOOD — alternating stripe sections
+══════════════════════════════════════ */
+#food { background: var(--white); color: var(--black); }
+#food .section-eyebrow { color: var(--gold-dk); }
+#food .section-eyebrow::before { background: linear-gradient(90deg, transparent, var(--gold-dk)); }
+#food .page-header::after { background: linear-gradient(90deg, var(--gold-dk), transparent); }
+#food .page-count { color: var(--gold-dk); }
+
+.food-sec { margin-bottom: 4.5rem; }
+
+/* Food header: vertical stripes + dark overlay */
+.food-head {
+  position: relative; overflow: hidden;
+  padding: 1.4rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 68px;
+}
+.food-head::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--black) 0, var(--black) var(--sw),
+    var(--white) var(--sw), var(--white) calc(var(--sw)*2)
+  );
+}
+.food-head::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(8,8,8,.15);
+}
+.food-head-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: .1em;
+  color: var(--white); mix-blend-mode: difference;
+  position: relative; z-index: 1;
+}
+.food-head-sub {
+  font-family: 'Cormorant Garamond', serif; font-size: .72rem;
+  letter-spacing: .22em; color: var(--gold);
+  position: relative; z-index: 1; font-style: italic;
+}
+
+.food-list { border: 1px solid rgba(0,0,0,.08); border-top: none; }
+.food-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.4rem 2rem; border-bottom: 1px solid rgba(0,0,0,.06);
+  gap: 2rem; transition: background .2s; cursor: default;
+}
+.food-item:last-child { border-bottom: none; }
+.food-item:hover { background: rgba(168,168,168,.04); }
+.f-name { font-weight: 500; font-size: .92rem; margin-bottom: .2rem; letter-spacing: .02em; }
+.f-desc { font-size: .78rem; color: #777; line-height: 1.65; }
+.f-price {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.15rem;
+  letter-spacing: .1em; white-space: nowrap; color: var(--gold-dk); font-weight: 400;
+}
+
+/* ══════════════════════════════════════
+   GALLERY
+══════════════════════════════════════ */
+#gallery { background: var(--black); }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(12,1fr);
+  grid-template-rows: 300px 300px;
+  gap: 3px; margin-top: 3rem;
+}
+.g-item:nth-child(1) { grid-column:1/5;  grid-row:1; }
+.g-item:nth-child(2) { grid-column:5/9;  grid-row:1; }
+.g-item:nth-child(3) { grid-column:9/13; grid-row:1/3; }
+.g-item:nth-child(4) { grid-column:1/4;  grid-row:2; }
+.g-item:nth-child(5) { grid-column:4/7;  grid-row:2; }
+.g-item:nth-child(6) { grid-column:7/9;  grid-row:2; }
+
+.g-item { overflow:hidden; position:relative; }
+.g-inner {
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden; transition:transform .6s cubic-bezier(.25,.46,.45,.94);
+}
+.g-item:hover .g-inner { transform:scale(1.05); }
+.g-inner svg { width:100%; height:100%; position:absolute; inset:0; }
+
+/* Gold-tinted overlay on hover */
+.g-overlay {
+  position:absolute; inset:0; z-index:3;
+  background: linear-gradient(135deg, rgba(8,8,8,.75) 0%, rgba(168,168,168,.12) 100%);
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+  opacity:0; transition:opacity .35s; padding:2rem;
+}
+.g-item:hover .g-overlay { opacity:1; }
+/* Gold bottom border reveal */
+.g-item::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:2px; z-index:4;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform:scaleX(0); transition:transform .4s;
+}
+.g-item:hover::after { transform:scaleX(1); }
+
+.g-title {
+  font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:.1em;
+  color:var(--white); margin-bottom:.3rem;
+}
+.g-sub {
+  font-family:'Cormorant Garamond',serif; font-size:.68rem; letter-spacing:.28em;
+  text-transform:uppercase; color:var(--gold); font-style:italic;
+}
+
+/* ══════════════════════════════════════
+   EVENTS
+══════════════════════════════════════ */
+#events { background: var(--gray); }
+#events::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  /* Very subtle stripe watermark */
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0, transparent calc(var(--sw) - 1px),
+    rgba(255,255,255,.018) calc(var(--sw) - 1px), rgba(255,255,255,.018) var(--sw),
+    transparent var(--sw), transparent calc(var(--sw)*2 - 1px),
+    rgba(255,255,255,.012) calc(var(--sw)*2 - 1px), rgba(255,255,255,.012) calc(var(--sw)*2)
+  );
+}
+
+.events-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:1px; background:rgba(168,168,168,.07); margin-top:3rem;
+}
+.ev-card {
+  background:var(--gray); padding:2.5rem;
+  position:relative; transition:background .3s;
+}
+.ev-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  transform:scaleX(0); transform-origin:left; transition:transform .4s;
+}
+.ev-card:hover { background: var(--gray2); }
+.ev-card:hover::before { transform:scaleX(1); }
+
+.ev-date {
+  font-family:'Cormorant Garamond',serif; font-size:.68rem; letter-spacing:.28em;
+  text-transform:uppercase; color:var(--gold); margin-bottom:1rem;
+  display:flex; align-items:center; gap:.8rem; font-style:italic;
+}
+.ev-dot { width:5px; height:5px; background:var(--gold); border-radius:50%; flex-shrink:0; }
+.ev-name {
+  font-family:'Bebas Neue',sans-serif; font-size:1.9rem; letter-spacing:.05em;
+  line-height:1.05; margin-bottom:.8rem; color:var(--white);
+}
+.ev-desc { font-size:.82rem; color:var(--muted); line-height:1.75; margin-bottom:1.5rem; }
+.ev-tag {
+  display:inline-block; padding:.3rem 1rem;
+  border:1px solid rgba(168,168,168,.3); font-size:.6rem;
+  letter-spacing:.22em; text-transform:uppercase; color:var(--gold);
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+}
+
+/* ══════════════════════════════════════
+   SHOP
+══════════════════════════════════════ */
+#shop { background: var(--black); }
+/* Stripe bg */
+#shop::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(248,248,244,.025) 0, rgba(248,248,244,.025) 1px,
+    transparent 1px, transparent var(--sw),
+    rgba(248,248,244,.025) var(--sw), rgba(248,248,244,.025) calc(var(--sw)+1px),
+    transparent calc(var(--sw)+1px), transparent calc(var(--sw)*2)
+  );
+}
+.shop-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  gap:1px; background:rgba(168,168,168,.07); margin-top:3rem;
+}
+.shop-card { background:var(--black); overflow:hidden; cursor:none; position:relative; }
+.shop-card:hover .shop-img { transform:scale(1.06); }
+/* Gold shimmer line on top */
+.shop-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px; z-index:5;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform:scaleX(0); transform-origin:left; transition:transform .4s;
+}
+.shop-card:hover::before { transform:scaleX(1); }
+
+.shop-img-wrap { height:230px; background:var(--gray); overflow:hidden; position:relative; }
+.shop-img-wrap::after {
+  content:'';
+  position:absolute; bottom:0; left:0; right:0; height:1px; z-index:2;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.shop-img {
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  transition:transform .5s cubic-bezier(.25,.46,.45,.94);
+  filter:grayscale(1);
+}
+.shop-body { padding:1.6rem 2rem 2rem; }
+.s-tag {
+  font-family:'Cormorant Garamond',serif; font-size:.62rem; letter-spacing:.3em;
+  text-transform:uppercase; color:var(--gold); font-style:italic; margin-bottom:.5rem;
+}
+.s-name { font-family:'Bebas Neue',sans-serif; font-size:1.45rem; letter-spacing:.05em; margin-bottom:.3rem; }
+.s-price { font-size:.82rem; color:var(--muted); margin-bottom:1.3rem; letter-spacing:.08em; }
+.btn-add {
+  width:100%; padding:.85rem;
+  background:transparent; color:var(--gold);
+  border:1px solid rgba(168,168,168,.4);
+  font-family:'DM Sans',sans-serif; font-size:.65rem; letter-spacing:.25em;
+  text-transform:uppercase; font-weight:400; cursor:none;
+  transition:background .25s, color .25s, border-color .25s;
+}
+.btn-add:hover { background:var(--gold); color:var(--black); border-color:var(--gold); }
+
+/* ══════════════════════════════════════
+   CONTACT
+══════════════════════════════════════ */
+#contact {
+  position:relative; overflow:hidden;
+}
+/* Stripe bg with heavy overlay */
+#contact::before {
+  content:''; position:absolute; inset:0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--white) 0, var(--white) var(--sw),
+    var(--black) var(--sw), var(--black) calc(var(--sw)*2)
+  );
+}
+#contact::after {
+  content:''; position:absolute; inset:0;
+  background: rgba(8,8,8,.93);
+}
+.contact-inner { position:relative; z-index:1; }
+.contact-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  margin-top:3rem;
+  border:1px solid rgba(168,168,168,.2);
+}
+.c-info {
+  padding:3rem;
+  border-right:1px solid rgba(168,168,168,.15);
+  background: rgba(8,8,8,.4);
+}
+.c-info h3 {
+  font-family:'Bebas Neue',sans-serif; font-size:2.2rem; margin-bottom:2rem;
+  letter-spacing:.06em;
+}
+.c-detail { margin-bottom:1.6rem; }
+.c-dlabel {
+  font-family:'Cormorant Garamond',serif; font-size:.62rem; letter-spacing:.32em;
+  text-transform:uppercase; color:var(--gold); font-style:italic; margin-bottom:.5rem;
+}
+.c-dval { font-size:.88rem; line-height:1.8; color:rgba(248,248,244,.7); }
+.hours { display:grid; grid-template-columns:1fr 1fr; gap:.3rem 2rem; margin-top:.4rem; }
+.hour { font-size:.8rem; color:var(--muted); }
+.hour span { color:var(--white); }
+
+.map-box {
+  margin-top:2rem; height:150px; position:relative; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(168,168,168,.15);
+}
+.map-box::before {
+  content:''; position:absolute; inset:0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--white) 0, var(--white) var(--sw),
+    var(--black) var(--sw), var(--black) calc(var(--sw)*2)
+  );
+  opacity:.12;
+}
+.map-box span {
+  position:relative; z-index:1;
+  font-family:'Cormorant Garamond',serif; font-size:.7rem; letter-spacing:.22em;
+  color:var(--gold); font-style:italic; text-transform:uppercase;
+  background:rgba(8,8,8,.7); padding:.5rem 1.2rem;
+  border:1px solid rgba(168,168,168,.2);
+}
+
+.c-form { padding:3rem; }
+.c-form h3 {
+  font-family:'Bebas Neue',sans-serif; font-size:2.2rem; margin-bottom:2rem; letter-spacing:.06em;
+}
+.fg { margin-bottom:1.5rem; }
+.fl {
+  display:block;
+  font-family:'Cormorant Garamond',serif; font-size:.62rem; letter-spacing:.32em;
+  text-transform:uppercase; color:var(--gold); font-style:italic; margin-bottom:.6rem;
+}
+.fi, .ft {
+  width:100%; background:rgba(255,255,255,.04);
+  border:none; border-bottom:1px solid rgba(168,168,168,.25);
+  color:var(--white); padding:1rem .4rem;
+  font-family:'DM Sans',sans-serif; font-size:.88rem;
+  outline:none; transition:border-color .25s; resize:none;
+  letter-spacing:.04em;
+}
+.fi:focus, .ft:focus { border-bottom-color:var(--gold); }
+.ft { height:120px; padding-top:.8rem; }
+
+/* ── FOOTER ── */
+footer { background:var(--black); }
+.footer-stripe {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-lt), var(--gold), transparent);
+}
+.footer-stripe-bold {
+  height: 8px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--white) 0, var(--white) var(--sw),
+    var(--black) var(--sw), var(--black) calc(var(--sw)*2)
+  );
+  opacity: .15;
+}
+.footer-inner {
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:1rem; padding:2.5rem 3rem;
+}
+.f-logo {
+  font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:.2em;
+  color:var(--white);
+}
+.f-logo span { color:var(--gold); }
+.f-copy {
+  font-family:'Cormorant Garamond',serif; font-size:.68rem; color:rgba(248,248,244,.3);
+  letter-spacing:.12em; font-style:italic;
+}
+.f-links { display:flex; gap:1.5rem; list-style:none; }
+.f-links a {
+  font-size:.65rem; color:rgba(248,248,244,.35); text-decoration:none;
+  letter-spacing:.15em; text-transform:uppercase; transition:color .2s;
+}
+.f-links a:hover { color:var(--gold); }
+
+/* ── MOBILE MENU ── */
+.mob-menu {
+  position:fixed; inset:0; z-index:999;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2rem;
+  transform:translateX(100%); transition:transform .45s cubic-bezier(.77,0,.175,1);
+}
+.mob-menu::before {
+  content:''; position:absolute; inset:0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--white) 0, var(--white) var(--sw),
+    var(--black) var(--sw), var(--black) calc(var(--sw)*2)
+  );
+}
+.mob-menu::after {
+  content:''; position:absolute; inset:0;
+  background:rgba(8,8,8,.93);
+}
+.mob-menu.open { transform:translateX(0); }
+.mob-menu a {
+  font-family:'Bebas Neue',sans-serif; font-size:3.5rem; letter-spacing:.1em;
+  color:var(--white); text-decoration:none; opacity:.45; transition:opacity .2s, color .2s;
+  position:relative; z-index:1;
+}
+.mob-menu a:hover { opacity:1; color:var(--gold); }
+
+/* ── ANIMATIONS ── */
+.fade-up { opacity:0; transform:translateY(28px); transition:opacity .8s, transform .8s; }
+.fade-up.vis { opacity:1; transform:translateY(0); }
+
+/* ── TOAST ── */
+.toast {
+  position:fixed; bottom:2.5rem; right:2.5rem;
+  background:var(--gold); color:var(--black);
+  padding:1rem 1.8rem; font-size:.75rem; letter-spacing:.15em; text-transform:uppercase;
+  z-index:9998; transform:translateY(130%); transition:transform .35s; pointer-events:none;
+  font-weight:500;
+}
+.toast.show { transform:translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){ --sw: 80px; }
+@media(max-width:900px){
+  nav { padding:0 1.5rem; }
+  .nav-links { display:none; }
+  .hamburger { display:flex; }
+  .hero-btns { flex-direction:column; }
+  .hero-badge-card { display:none; }
+  .contact-grid { grid-template-columns:1fr; }
+  .c-info { border-right:none; border-bottom:1px solid rgba(168,168,168,.15); }
+  .container { padding:0 1.5rem; }
+  .gallery-grid { grid-template-columns:1fr 1fr; grid-template-rows:auto; }
+  .g-item:nth-child(n) { grid-column:auto; grid-row:auto; height:230px; }
+  .about-divider { display:none; }
+  --sw: 70px;
+}
+@media(max-width:600px){
+  section { padding:80px 0; }
+  .hero-h1 { font-size:4rem; }
+  .events-grid,.shop-grid { grid-template-columns:1fr; }
+  .footer-inner { flex-direction:column; text-align:center; padding:2rem 1.5rem; }
+  .gallery-grid { grid-template-columns:1fr; }
+  .g-item:nth-child(n) { height:210px; }
+  --sw: 55px;
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="toast" id="toast">Added to cart ✓</div>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mobMenu">
+  <a href="#home"    onclick="closeMob()">Home</a>
+  <a href="#coffee"  onclick="closeMob()">Coffee</a>
+  <a href="#food"    onclick="closeMob()">Food</a>
+  <a href="#gallery" onclick="closeMob()">Gallery</a>
+  <a href="#events"  onclick="closeMob()">Events</a>
+  <a href="#shop"    onclick="closeMob()">Shop</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">
+    <div class="badge">
+      <div class="badge-l"><span>C</span></div>
+      <div class="badge-r"><span>J</span></div>
+    </div>
+    CAFE JUVENTUS
+    <span class="nav-tagline">Est. 2018 · Toronto</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#coffee">Coffee</a></li>
+    <li><a href="#food">Food</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ════════ HOME ════════ -->
+<section id="home">
+  <div class="hero-stripes"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-vignette"></div>
+
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-kicker">Fino Alla Fine · Toronto · Est. 2018</div>
+      <h1 class="hero-h1">
+        We Dream<br>
+        <span class="gold-word">In Black</span><br>
+        <span class="outline">And White</span>
+      </h1>
+      <p class="hero-sub">
+        Where obsession meets craft. Premium single-origin beans, precision pulls, and a community that runs on something stronger than routine.
+      </p>
+      <div class="hero-btns fade-up">
+        <a href="#coffee" class="btn btn-gold">View Menu</a>
+        <a href="#contact" class="btn btn-ghost">Find Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating info card -->
+  <div class="hero-badge-card fade-up">
+    <div class="hbc-label">100% Arabica</div>
+    <div class="hbc-main">SINGLE ORIGIN</div>
+    <div class="hbc-sub">Precision · Craft · Community</div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- Stats strip -->
+<div class="about-strip">
+  <div class="about-strip-inner">
+    <div class="about-stat"><div class="about-stat-num">7+</div><div class="about-stat-label">Years of craft</div></div>
+    <div class="about-divider"></div>
+    <div class="about-stat"><div class="about-stat-num">40+</div><div class="about-stat-label">Menu items</div></div>
+    <div class="about-divider"></div>
+    <div class="about-stat"><div class="about-stat-num">100%</div><div class="about-stat-label">Single origin</div></div>
+    <div class="about-divider"></div>
+    <div class="about-stat"><div class="about-stat-num">∞</div><div class="about-stat-label">Good mornings</div></div>
+  </div>
+</div>
+
+<div class="gold-bar"></div>
+
+<!-- ════════ COFFEE ════════ -->
+<section id="coffee">
+  <div class="container">
+    <div class="page-header fade-up">
+      <div class="page-header-inner">
+        <div>
+          <div class="section-eyebrow">02 — Our Menu</div>
+          <h2 class="section-title">Coffee</h2>
+        </div>
+        <div class="page-count">Crafted daily</div>
+      </div>
+    </div>
+
+    <div class="coffee-category fade-up">
+      <div class="cat-label">Espresso <span>Bold & Precise</span></div>
+      <div class="coffee-grid">
+        <div class="coffee-card"><div class="c-icon">☕</div><div class="c-name">Espresso</div><div class="c-desc">A pure, concentrated shot of our signature dark blend. Intense, complex, unwavering.</div><div class="c-price">$3.50</div></div>
+        <div class="coffee-card"><div class="c-icon">☕</div><div class="c-name">Double Espresso</div><div class="c-desc">Two shots for those who refuse to negotiate on strength. No apologies.</div><div class="c-price">$4.50</div></div>
+        <div class="coffee-card"><div class="c-icon">☕</div><div class="c-name">Americano</div><div class="c-desc">Espresso diluted with hot water. Long, smooth, and full of depth.</div><div class="c-price">$4.00</div></div>
+        <div class="coffee-card"><div class="c-icon">☕</div><div class="c-name">Macchiato</div><div class="c-desc">Espresso stained with steamed milk. Balance found in restraint.</div><div class="c-price">$4.50</div></div>
+      </div>
+    </div>
+
+    <div class="coffee-category fade-up">
+      <div class="cat-label">Milk-Based <span>Silky & Smooth</span></div>
+      <div class="coffee-grid">
+        <div class="coffee-card"><div class="c-icon">🥛</div><div class="c-name">Latte</div><div class="c-desc">Espresso, steamed milk, thin microfoam. The everyday classic, perfected.</div><div class="c-price">$5.50</div></div>
+        <div class="coffee-card"><div class="c-icon">🥛</div><div class="c-name">Cappuccino</div><div class="c-desc">Equal thirds: espresso, steamed milk, thick foam. The Italian standard.</div><div class="c-price">$5.50</div></div>
+        <div class="coffee-card"><div class="c-icon">🥛</div><div class="c-name">Flat White</div><div class="c-desc">Double ristretto, velvety microfoam. Less volume, more intensity.</div><div class="c-price">$5.75</div></div>
+        <div class="coffee-card"><div class="c-icon">🥛</div><div class="c-name">Cortado</div><div class="c-desc">A 1:1 ratio of espresso to warm milk. Cuts the bitterness, keeps character.</div><div class="c-price">$5.00</div></div>
+      </div>
+    </div>
+
+    <div class="coffee-category fade-up">
+      <div class="cat-label">Specialty <span>Crafted Signatures</span></div>
+      <div class="coffee-grid">
+        <div class="coffee-card"><div class="c-icon">✦</div><div class="c-name">Mocha</div><div class="c-desc">Dark chocolate, espresso, steamed milk. The indulgent intersection.</div><div class="c-price">$6.50</div></div>
+        <div class="coffee-card"><div class="c-icon">✦</div><div class="c-name">Caramel Latte</div><div class="c-desc">House latte with house-made caramel drizzle. Sweetness with intention.</div><div class="c-price">$6.50</div></div>
+      </div>
+    </div>
+
+    <div class="coffee-category fade-up">
+      <div class="cat-label">Cold <span>Chilled & Bold</span></div>
+      <div class="coffee-grid">
+        <div class="coffee-card"><div class="c-icon">🧊</div><div class="c-name">Coffee Crema</div><div class="c-desc">Rich espresso with a smooth golden crema layer. Bold, velvety, balanced.</div><div class="c-price">$6.00</div></div>
+        <div class="coffee-card"><div class="c-icon">🧊</div><div class="c-name">Iced Latte</div><div class="c-desc">Double espresso over ice with cold milk. Clean, refreshing, reliable.</div><div class="c-price">$6.00</div></div>
+        <div class="coffee-card"><div class="c-icon">🧊</div><div class="c-name">Iced Coffee</div><div class="c-desc">Flash-brewed and chilled over ice. Bright, punchy, no fuss.</div><div class="c-price">$5.00</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-bar"></div>
+
+<!-- ════════ FOOD ════════ -->
+<section id="food">
+  <div class="container">
+    <div class="page-header fade-up">
+      <div class="page-header-inner">
+        <div>
+          <div class="section-eyebrow">03 — Kitchen</div>
+          <h2 class="section-title">Food</h2>
+        </div>
+        <div class="page-count">All day menu</div>
+      </div>
+    </div>
+
+    <div class="food-sec fade-up">
+      <div class="food-head">
+        <span class="food-head-title">Breakfast</span>
+        <span class="food-head-sub">All day</span>
+      </div>
+      <div class="food-list">
+        <div class="food-item"><div><div class="f-name">Butter Croissant</div><div class="f-desc">Flaky, golden, house-baked daily. Served warm.</div></div><div class="f-price">$4.00</div></div>
+        <div class="food-item"><div><div class="f-name">Egg & Cheese Sandwich</div><div class="f-desc">Scrambled egg, aged cheddar, sourdough. The morning essential.</div></div><div class="f-price">$8.00</div></div>
+        <div class="food-item"><div><div class="f-name">Chocolate Croissant</div><div class="f-desc">Buttery, flaky pastry filled with rich melted chocolate — warm and indulgent.</div></div><div class="f-price">$9.50</div></div>
+      </div>
+    </div>
+
+    <div class="food-sec fade-up">
+      <div class="food-head">
+        <span class="food-head-title">Pastries</span>
+        <span class="food-head-sub">All day</span>
+      </div>
+      <div class="food-list">
+        <div class="food-item"><div><div class="f-name">Blueberry Muffin</div><div class="f-desc">Oversized, bursting with berries, golden-topped.</div></div><div class="f-price">$4.00</div></div>
+        <div class="food-item"><div><div class="f-name">Dark Chocolate Cookie</div><div class="f-desc">Sea salt finish, gooey centre. A serious cookie for serious people.</div></div><div class="f-price">$3.50</div></div>
+        <div class="food-item"><div><div class="f-name">Bomboloni</div><div class="f-desc">Pistachio cream filled, dusted with sugar. Indulgent, unapologetically.</div></div><div class="f-price">$5.50</div></div>
+      </div>
+    </div>
+
+    <div class="food-sec fade-up">
+      <div class="food-head">
+        <span class="food-head-title">Panini</span>
+        <span class="food-head-sub">From 11am</span>
+      </div>
+      <div class="food-list">
+        <div class="food-item"><div><div class="f-name">Meat Panini</div><div class="f-desc">Mortadella, prosciutto, turkey or ham with melted cheese on crispy bread.</div></div><div class="f-price">$12.00</div></div>
+        <div class="food-item"><div><div class="f-name">Tuna Panini</div><div class="f-desc">Seasoned tuna, melted cheese, fresh vegetables on crispy artisan bread.</div></div><div class="f-price">$13.00</div></div>
+        <div class="food-item"><div><div class="f-name">Grilled Cheese</div><div class="f-desc">Melted cheese between buttered bread, pressed golden and crispy.</div></div><div class="f-price">$11.00</div></div>
+        <div class="food-item"><div><div class="f-name">Veggie Panini</div><div class="f-desc">Grilled seasonal vegetables on crispy artisan bread.</div></div><div class="f-price">$13.50</div></div>
+      </div>
+    </div>
+
+    <div class="food-sec fade-up">
+      <div class="food-head">
+        <span class="food-head-title">Desserts</span>
+        <span class="food-head-sub">Worth it</span>
+      </div>
+      <div class="food-list">
+        <div class="food-item"><div><div class="f-name">Gelato</div><div class="f-desc">Smooth, dense Italian-style frozen dessert. Creamy texture, intense taste.</div></div><div class="f-price">$4.50</div></div>
+        <div class="food-item"><div><div class="f-name">Affogato</div><div class="f-desc">Hot espresso poured over vanilla gelato. Hot and cold, bitter and sweet.</div></div><div class="f-price">$7.00</div></div>
+        <div class="food-item"><div><div class="f-name">Tiramisu</div><div class="f-desc">Espresso-soaked sponge, mascarpone, dusted cocoa. Italy, in a cup.</div></div><div class="f-price">$7.50</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-bar"></div>
+
+<!-- ════════ GALLERY ════════ -->
+<section id="gallery">
+  <div class="container">
+    <div class="page-header fade-up">
+      <div class="page-header-inner">
+        <div>
+          <div class="section-eyebrow">04 — Visual Story</div>
+          <h2 class="section-title">Gallery</h2>
+        </div>
+        <div class="page-count">Life at Cafe Juventus</div>
+      </div>
+    </div>
+
+    <div class="gallery-grid fade-up">
+
+      <!-- 1: Espresso pull — stripe bg dark -->
+      <div class="g-item">
+        <div class="g-inner">
+          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <!-- Juve stripe background -->
+            <rect width="400" height="300" fill="#f8f8f4"/>
+            <rect x="0"   width="120" height="300" fill="#080808"/>
+            <rect x="240" width="120" height="300" fill="#080808"/>
+            <!-- Dark overlay -->
+            <rect width="400" height="300" fill="rgba(8,8,8,.78)"/>
+            <!-- Espresso machine -->
+            <rect x="148" y="48" width="104" height="64" rx="5" fill="none" stroke="rgba(168,168,168,.5)" stroke-width="1.5"/>
+            <rect x="163" y="112" width="74" height="30" rx="4" fill="rgba(168,168,168,.08)" stroke="rgba(168,168,168,.35)" stroke-width="1"/>
+            <line x1="180" y1="142" x2="173" y2="178" stroke="rgba(168,168,168,.7)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="220" y1="142" x2="227" y2="178" stroke="rgba(168,168,168,.7)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M155 178 L163 224 L237 224 L245 178Z" fill="rgba(248,248,244,.06)" stroke="rgba(168,168,168,.45)" stroke-width="1.5"/>
+            <ellipse cx="200" cy="178" rx="45" ry="9" fill="rgba(168,168,168,.12)" stroke="rgba(168,168,168,.45)" stroke-width="1"/>
+            <path d="M176 176 Q198 168 212 176 Q224 184 200 180Z" fill="rgba(248,248,244,.45)"/>
+            <ellipse cx="200" cy="226" rx="54" ry="8" fill="none" stroke="rgba(168,168,168,.25)" stroke-width="1"/>
+            <text x="200" y="264" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="12" fill="rgba(168,168,168,.6)" letter-spacing="6">ESPRESSO</text>
+          </svg>
+        </div>
+        <div class="g-overlay">
+          <div class="g-title">Espresso Pull</div>
+          <div class="g-sub">Precision in every shot</div>
+        </div>
+      </div>
+
+      <!-- 2: Latte art top-down — white bg with stripe -->
+      <div class="g-item">
+        <div class="g-inner">
+          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="300" fill="#080808"/>
+            <rect x="0"   width="120" height="300" fill="#f8f8f4"/>
+            <rect x="240" width="120" height="300" fill="#f8f8f4"/>
+            <rect width="400" height="300" fill="rgba(8,8,8,.7)"/>
+            <!-- Latte cup from above -->
+            <ellipse cx="200" cy="148" rx="105" ry="97" fill="rgba(248,248,244,.05)" stroke="rgba(168,168,168,.3)" stroke-width="1.5"/>
+            <ellipse cx="200" cy="148" rx="88" ry="82" fill="rgba(248,248,244,.08)" stroke="rgba(168,168,168,.2)" stroke-width="1"/>
+            <ellipse cx="200" cy="148" rx="62" ry="57" fill="rgba(120,72,28,.35)"/>
+            <path d="M200 95 Q224 112 228 135 Q222 150 200 154 Q178 150 172 135 Q176 112 200 95Z" fill="rgba(120,72,28,.4)"/>
+            <path d="M200 108 Q218 122 222 140 Q216 150 200 152 Q184 150 178 140 Q182 122 200 108Z" fill="rgba(248,248,244,.52)"/>
+            <path d="M200 120 Q213 130 215 143 Q209 150 200 151 Q191 150 185 143 Q187 130 200 120Z" fill="rgba(120,72,28,.45)"/>
+            <path d="M200 130 Q208 137 209 144 Q204 149 200 150 Q196 149 191 144 Q192 137 200 130Z" fill="rgba(248,248,244,.65)"/>
+            <path d="M194 92 Q200 84 206 92" stroke="rgba(168,168,168,.45)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <text x="200" y="272" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="12" fill="rgba(168,168,168,.6)" letter-spacing="6">LATTE ART</text>
+          </svg>
+        </div>
+        <div class="g-overlay">
+          <div class="g-title">Latte Art</div>
+          <div class="g-sub">Crafted with intention</div>
+        </div>
+      </div>
+
+      <!-- 3: Tall right — full Juve vertical stripes + CJ monogram -->
+      <div class="g-item">
+        <div class="g-inner">
+          <svg viewBox="0 0 280 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <!-- True Juve vertical stripes -->
+            <rect width="280" height="600" fill="#f8f8f4"/>
+            <rect x="0"   width="90" height="600" fill="#080808"/>
+            <rect x="190" width="90" height="600" fill="#080808"/>
+            <!-- Overlay -->
+            <rect width="280" height="600" fill="rgba(8,8,8,.6)"/>
+            <!-- Gold frame lines -->
+            <rect x="20" y="20" width="240" height="560" fill="none" stroke="rgba(168,168,168,.18)" stroke-width="1"/>
+            <rect x="28" y="28" width="224" height="544" fill="none" stroke="rgba(168,168,168,.1)" stroke-width="0.5"/>
+            <!-- Interior: window -->
+            <rect x="55" y="60" width="170" height="200" rx="3" fill="none" stroke="rgba(168,168,168,.3)" stroke-width="1.5"/>
+            <line x1="140" y1="60" x2="140" y2="260" stroke="rgba(168,168,168,.18)" stroke-width="1"/>
+            <line x1="55"  y1="160" x2="225" y2="160" stroke="rgba(168,168,168,.18)" stroke-width="1"/>
+            <!-- Table -->
+            <rect x="75" y="330" width="130" height="4" rx="2" fill="rgba(168,168,168,.35)"/>
+            <rect x="96" y="334" width="6" height="72" rx="2" fill="rgba(248,248,244,.2)"/>
+            <rect x="178" y="334" width="6" height="72" rx="2" fill="rgba(248,248,244,.2)"/>
+            <!-- Cup on table -->
+            <path d="M116 302 L123 328 L157 328 L164 302Z" fill="rgba(248,248,244,.12)" stroke="rgba(168,168,168,.45)" stroke-width="1.2"/>
+            <ellipse cx="140" cy="302" rx="24" ry="6" fill="rgba(248,248,244,.18)" stroke="rgba(168,168,168,.35)" stroke-width="1"/>
+            <!-- CJ monogram large -->
+            <text x="140" y="470" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="52" fill="rgba(168,168,168,.22)" letter-spacing="8">CJ</text>
+            <text x="140" y="498" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="9" fill="rgba(168,168,168,.3)" letter-spacing="6">TORONTO</text>
+            <line x1="80" y1="508" x2="200" y2="508" stroke="rgba(168,168,168,.18)" stroke-width=".5"/>
+          </svg>
+        </div>
+        <div class="g-overlay">
+          <div class="g-title">The Space</div>
+          <div class="g-sub">Where community lives</div>
+        </div>
+      </div>
+
+      <!-- 4: Coffee beans — dark -->
+      <div class="g-item">
+        <div class="g-inner">
+          <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="300" fill="#080808"/>
+            <rect x="0"  width="90" height="300" fill="#f8f8f4" opacity=".04"/>
+            <rect x="210" width="90" height="300" fill="#f8f8f4" opacity=".04"/>
+            <g transform="rotate(-25 80 75)"><ellipse cx="80" cy="75" rx="22" ry="13" fill="none" stroke="rgba(168,168,168,.4)" stroke-width="1.2"/><line x1="80" y1="63" x2="80" y2="87" stroke="rgba(168,168,168,.4)" stroke-width="1"/></g>
+            <g transform="rotate(10 160 55)"><ellipse cx="160" cy="55" rx="22" ry="13" fill="none" stroke="rgba(248,248,244,.3)" stroke-width="1.2"/><line x1="160" y1="43" x2="160" y2="67" stroke="rgba(248,248,244,.3)" stroke-width="1"/></g>
+            <g transform="rotate(-40 240 95)"><ellipse cx="240" cy="95" rx="22" ry="13" fill="none" stroke="rgba(168,168,168,.4)" stroke-width="1.2"/><line x1="240" y1="83" x2="240" y2="107" stroke="rgba(168,168,168,.4)" stroke-width="1"/></g>
+            <g transform="rotate(20 65 170)"><ellipse cx="65" cy="170" rx="22" ry="13" fill="none" stroke="rgba(248,248,244,.3)" stroke-width="1.2"/><line x1="65" y1="158" x2="65" y2="182" stroke="rgba(248,248,244,.3)" stroke-width="1"/></g>
+            <g transform="rotate(-15 185 175)"><ellipse cx="185" cy="175" rx="22" ry="13" fill="none" stroke="rgba(168,168,168,.4)" stroke-width="1.2"/><line x1="185" y1="163" x2="185" y2="187" stroke="rgba(168,168,168,.4)" stroke-width="1"/></g>
+            <g transform="rotate(35 255 215)"><ellipse cx="255" cy="215" rx="22" ry="13" fill="none" stroke="rgba(248,248,244,.3)" stroke-width="1.2"/><line x1="255" y1="203" x2="255" y2="227" stroke="rgba(248,248,244,.3)" stroke-width="1"/></g>
+            <g transform="rotate(-30 120 235)"><ellipse cx="120" cy="235" rx="22" ry="13" fill="none" stroke="rgba(168,168,168,.4)" stroke-width="1.2"/><line x1="120" y1="223" x2="120" y2="247" stroke="rgba(168,168,168,.4)" stroke-width="1"/></g>
+            <text x="150" y="278" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="11" fill="rgba(168,168,168,.5)" letter-spacing="6">SINGLE ORIGIN</text>
+          </svg>
+        </div>
+        <div class="g-overlay">
+          <div class="g-title">Single Origin</div>
+          <div class="g-sub">Sourced with care</div>
+        </div>
+      </div>
+
+      <!-- 5: Barista — stripe bg white -->
+      <div class="g-item">
+        <div class="g-inner">
+          <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="300" fill="#f8f8f4"/>
+            <rect x="0"  width="90" height="300" fill="#080808"/>
+            <rect x="210" width="90" height="300" fill="#080808"/>
+            <rect width="300" height="300" fill="rgba(8,8,8,.72)"/>
+            <circle cx="150" cy="72" r="30" fill="rgba(248,248,244,.12)" stroke="rgba(168,168,168,.4)" stroke-width="1.5"/>
+            <path d="M108 102 Q150 96 192 102 L198 202 L102 202Z" fill="rgba(248,248,244,.1)" stroke="rgba(168,168,168,.35)" stroke-width="1.5"/>
+            <line x1="128" y1="108" x2="112" y2="142" stroke="rgba(168,168,168,.25)" stroke-width="1"/>
+            <line x1="172" y1="108" x2="188" y2="142" stroke="rgba(168,168,168,.25)" stroke-width="1"/>
+            <path d="M108 122 Q83 142 78 166" stroke="rgba(248,248,244,.18)" stroke-width="9" stroke-linecap="round" fill="none"/>
+            <path d="M63 156 L70 196 L100 196 L107 156Z" fill="rgba(248,248,244,.12)" stroke="rgba(168,168,168,.4)" stroke-width="1.2"/>
+            <path d="M107 167 Q120 167 120 177 Q120 187 107 187" stroke="rgba(168,168,168,.3)" fill="none" stroke-width="1"/>
+            <path d="M76 153 Q72 138 78 125" stroke="rgba(168,168,168,.3)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <text x="150" y="242" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="11" fill="rgba(168,168,168,.55)" letter-spacing="6">THE BARISTA</text>
+          </svg>
+        </div>
+        <div class="g-overlay">
+          <div class="g-title">The Barista</div>
+          <div class="g-sub">Masters of their craft</div>
+        </div>
+      </div>
+
+      <!-- 6: Pastry — small -->
+      <div class="g-item">
+        <div class="g-inner">
+          <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="300" fill="#f8f8f4"/>
+            <rect x="0"  width="60" height="300" fill="#080808"/>
+            <rect x="140" width="60" height="300" fill="#080808"/>
+            <rect width="200" height="300" fill="rgba(8,8,8,.75)"/>
+            <path d="M55 122 Q100 80 145 122 Q168 148 146 174 Q124 188 100 184 Q76 188 54 174 Q32 148 55 122Z" fill="rgba(248,248,244,.08)" stroke="rgba(168,168,168,.5)" stroke-width="1.5"/>
+            <path d="M60 137 Q100 118 140 137" stroke="rgba(248,248,244,.2)" stroke-width="1" fill="none"/>
+            <path d="M56 150 Q100 130 144 150" stroke="rgba(248,248,244,.18)" stroke-width="1" fill="none"/>
+            <path d="M54 162 Q100 143 146 162" stroke="rgba(248,248,244,.15)" stroke-width="1" fill="none"/>
+            <ellipse cx="100" cy="178" rx="70" ry="14" fill="none" stroke="rgba(168,168,168,.25)" stroke-width="1"/>
+            <text x="100" y="234" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="11" fill="rgba(168,168,168,.55)" letter-spacing="4">PASTRIES</text>
+          </svg>
+        </div>
+        <div class="g-overlay">
+          <div class="g-title">Fresh Pastries</div>
+          <div class="g-sub">Baked daily</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="gold-bar"></div>
+
+<!-- ════════ EVENTS ════════ -->
+<section id="events">
+  <div class="container">
+    <div class="page-header fade-up">
+      <div class="page-header-inner">
+        <div>
+          <div class="section-eyebrow">05 — Happenings</div>
+          <h2 class="section-title">Events</h2>
+        </div>
+        <div class="page-count">Upcoming</div>
+      </div>
+    </div>
+    <div class="events-grid">
+      <div class="ev-card fade-up"><div class="ev-date"><div class="ev-dot"></div>May 10, 2026 · 7:00 PM</div><div class="ev-name">Jazz & Cold Brew Night</div><div class="ev-desc">Live jazz quartet in the main hall. Complimentary cold brew tasters, low lights. Bring someone worth the evening.</div><div class="ev-tag">Live Music</div></div>
+      <div class="ev-card fade-up"><div class="ev-date"><div class="ev-dot"></div>May 17, 2026 · 8:00 PM</div><div class="ev-name">Open Mic Saturday</div><div class="ev-desc">Take the mic or take a seat. Open to all — spoken word, music, comedy. Sign up at the counter.</div><div class="ev-tag">Open Mic</div></div>
+      <div class="ev-card fade-up"><div class="ev-date"><div class="ev-dot"></div>May 23, 2026 · 6:00 PM</div><div class="ev-name">Barista Workshop</div><div class="ev-desc">Espresso basics, milk texturing, latte art. Limited to 12 spots. $40 per person, includes a bag of beans.</div><div class="ev-tag">Workshop</div></div>
+      <div class="ev-card fade-up"><div class="ev-date"><div class="ev-dot"></div>May 30, 2026 · 7:30 PM</div><div class="ev-name">Game Night</div><div class="ev-desc">Board games, trivia, and the best cups in the city. Teams of 4, prizes for winners. Free to attend.</div><div class="ev-tag">Social</div></div>
+      <div class="ev-card fade-up"><div class="ev-date"><div class="ev-dot"></div>Jun 7, 2026 · 5:00 PM</div><div class="ev-name">Art Show: Black & White</div><div class="ev-desc">A local photographer's exhibit exploring contrast in urban Toronto. Opening reception with complimentary drinks.</div><div class="ev-tag">Art</div></div>
+      <div class="ev-card fade-up"><div class="ev-date"><div class="ev-dot"></div>Jun 14, 2026 · 9:00 AM</div><div class="ev-name">Morning Run Club</div><div class="ev-desc">5km run through the neighbourhood, back for breakfast and coffee. All paces welcome. Free.</div><div class="ev-tag">Community</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-bar"></div>
+
+<!-- ════════ SHOP ════════ -->
+<section id="shop">
+  <div class="container">
+    <div class="page-header fade-up">
+      <div class="page-header-inner">
+        <div>
+          <div class="section-eyebrow">06 — Merch & Beans</div>
+          <h2 class="section-title">Shop</h2>
+        </div>
+        <div class="page-count">Take it home</div>
+      </div>
+    </div>
+    <div class="shop-grid">
+
+      <div class="shop-card fade-up">
+        <div class="shop-img-wrap"><div class="shop-img">
+          <svg viewBox="0 0 160 160" width="110" fill="none">
+            <rect width="160" height="160" fill="#f8f8f4" opacity=".03"/>
+            <rect x="0" width="53" height="160" fill="#f8f8f4" opacity=".06"/>
+            <rect x="107" width="53" height="160" fill="#f8f8f4" opacity=".06"/>
+            <ellipse cx="80" cy="80" rx="48" ry="48" fill="none" stroke="rgba(168,168,168,.4)" stroke-width="1.2"/>
+            <ellipse cx="80" cy="80" rx="34" ry="34" fill="rgba(168,168,168,.05)"/>
+            <text x="80" y="88" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="18" fill="rgba(168,168,168,.5)" letter-spacing="2">CJ</text>
+          </svg>
+        </div></div>
+        <div class="shop-body"><div class="s-tag">Coffee Beans</div><div class="s-name">Dark Roast Blend</div><div class="s-price">250g — $18.00</div><button class="btn-add" onclick="addToCart()">Add to Cart</button></div>
+      </div>
+
+      <div class="shop-card fade-up">
+        <div class="shop-img-wrap"><div class="shop-img">
+          <svg viewBox="0 0 160 160" width="110" fill="none">
+            <rect width="160" height="160" fill="#f8f8f4" opacity=".03"/>
+            <rect x="0" width="53" height="160" fill="#f8f8f4" opacity=".06"/>
+            <rect x="107" width="53" height="160" fill="#f8f8f4" opacity=".06"/>
+            <ellipse cx="80" cy="80" rx="48" ry="48" fill="none" stroke="rgba(248,248,244,.25)" stroke-width="1.2"/>
+            <ellipse cx="80" cy="80" rx="34" ry="34" fill="rgba(248,248,244,.04)"/>
+            <text x="80" y="88" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="18" fill="rgba(248,248,244,.4)" letter-spacing="2">CJ</text>
+          </svg>
+        </div></div>
+        <div class="shop-body"><div class="s-tag">Coffee Beans</div><div class="s-name">Light Roast Single Origin</div><div class="s-price">250g — $22.00</div><button class="btn-add" onclick="addToCart()">Add to Cart</button></div>
+      </div>
+
+      <div class="shop-card fade-up">
+        <div class="shop-img-wrap"><div class="shop-img">
+          <svg viewBox="0 0 160 160" width="110" fill="none">
+            <rect x="0" width="53" height="160" fill="#f8f8f4" opacity=".05"/>
+            <rect x="107" width="53" height="160" fill="#f8f8f4" opacity=".05"/>
+            <rect x="48" y="52" width="72" height="70" rx="4" fill="rgba(248,248,244,.06)" stroke="rgba(168,168,168,.4)" stroke-width="1.2"/>
+            <path d="M120 67 Q144 67 144 87 Q144 107 120 107" stroke="rgba(168,168,168,.3)" fill="none" stroke-width="1.5"/>
+            <text x="84" y="94" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="13" fill="rgba(168,168,168,.45)">CJ</text>
+          </svg>
+        </div></div>
+        <div class="shop-body"><div class="s-tag">Merchandise</div><div class="s-name">CJ Ceramic Mug</div><div class="s-price">12oz — $28.00</div><button class="btn-add" onclick="addToCart()">Add to Cart</button></div>
+      </div>
+
+      <div class="shop-card fade-up">
+        <div class="shop-img-wrap"><div class="shop-img">
+          <!-- Tee with Juve vertical stripes -->
+          <svg viewBox="0 0 160 160" width="110" fill="none">
+            <defs><clipPath id="tee"><path d="M30 50 L20 78 L44 83 L44 138 L116 138 L116 83 L140 78 L130 50 L108 58 Q80 68 52 58Z"/></clipPath></defs>
+            <!-- Vertical Juve stripes on tee -->
+            <rect x="20" y="50" width="40" height="90" fill="#f8f8f4" opacity=".9" clip-path="url(#tee)"/>
+            <rect x="60" y="50" width="40" height="90" fill="#080808" clip-path="url(#tee)"/>
+            <rect x="100" y="50" width="40" height="90" fill="#f8f8f4" opacity=".9" clip-path="url(#tee)"/>
+            <path d="M30 50 L20 78 L44 83 L44 138 L116 138 L116 83 L140 78 L130 50 L108 58 Q80 68 52 58Z" fill="none" stroke="rgba(168,168,168,.4)" stroke-width="1.2"/>
+            <text x="80" y="106" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="9" fill="rgba(168,168,168,.7)">CJ</text>
+          </svg>
+        </div></div>
+        <div class="shop-body"><div class="s-tag">Merchandise</div><div class="s-name">Juventus Stripe Tee</div><div class="s-price">S / M / L — $42.00</div><button class="btn-add" onclick="addToCart()">Add to Cart</button></div>
+      </div>
+
+      <div class="shop-card fade-up">
+        <div class="shop-img-wrap"><div class="shop-img">
+          <svg viewBox="0 0 160 160" width="110" fill="none">
+            <rect x="0" width="53" height="160" fill="#f8f8f4" opacity=".05"/>
+            <rect x="107" width="53" height="160" fill="#f8f8f4" opacity=".05"/>
+            <path d="M38 70 L33 140 L127 140 L122 70 Z" fill="rgba(248,248,244,.05)" stroke="rgba(168,168,168,.4)" stroke-width="1.2"/>
+            <path d="M60 70 Q60 45 80 45 Q100 45 100 70" fill="none" stroke="rgba(168,168,168,.35)" stroke-width="1.5"/>
+            <text x="80" y="114" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="11" fill="rgba(168,168,168,.45)" letter-spacing="2">CJ</text>
+          </svg>
+        </div></div>
+        <div class="shop-body"><div class="s-tag">Merchandise</div><div class="s-name">CJ Canvas Tote</div><div class="s-price">One size — $24.00</div><button class="btn-add" onclick="addToCart()">Add to Cart</button></div>
+      </div>
+
+      <div class="shop-card fade-up">
+        <div class="shop-img-wrap"><div class="shop-img">
+          <svg viewBox="0 0 160 160" width="110" fill="none">
+            <rect x="0" width="53" height="160" fill="#f8f8f4" opacity=".05"/>
+            <rect x="107" width="53" height="160" fill="#f8f8f4" opacity=".05"/>
+            <ellipse cx="80" cy="80" rx="52" ry="52" fill="none" stroke="rgba(168,168,168,.3)" stroke-width="1.2"/>
+            <ellipse cx="80" cy="80" rx="40" ry="40" fill="rgba(168,168,168,.04)"/>
+            <text x="80" y="76" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="11" fill="rgba(168,168,168,.45)" letter-spacing="3">CAFE</text>
+            <text x="80" y="92" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="9" fill="rgba(168,168,168,.3)" letter-spacing="2">GIFT SET</text>
+          </svg>
+        </div></div>
+        <div class="shop-body"><div class="s-tag">Bundle</div><div class="s-name">Gift Set — Mug + Beans</div><div class="s-price">Bundle — $42.00</div><button class="btn-add" onclick="addToCart()">Add to Cart</button></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="gold-bar"></div>
+
+<!-- ════════ CONTACT ════════ -->
+<section id="contact">
+  <div class="contact-inner container">
+    <div class="page-header fade-up">
+      <div class="page-header-inner">
+        <div>
+          <div class="section-eyebrow">07 — Get In Touch</div>
+          <h2 class="section-title">Contact</h2>
+        </div>
+      </div>
+    </div>
+    <div class="contact-grid fade-up">
+      <div class="c-info">
+        <h3>Find Us</h3>
+        <div class="c-detail"><div class="c-dlabel">Address</div><div class="c-dval">2200 Danforth Ave<br>Toronto, ON M4C 1K3<br>Canada</div></div>
+        <div class="c-detail"><div class="c-dlabel">Phone</div><div class="c-dval">+1 (647) 907-9937</div></div>
+        <div class="c-detail"><div class="c-dlabel">Email</div><div class="c-dval">Tsegay.Tsehaye@icloud.com</div></div>
+        <div class="c-detail">
+          <div class="c-dlabel">Hours</div>
+          <div class="hours">
+            <div class="hour"><span>Mon–Fri</span></div><div class="hour">8:00am – 11:00pm</div>
+            <div class="hour"><span>Saturday</span></div><div class="hour">8:00am – 11:00pm</div>
+            <div class="hour"><span>Sunday</span></div><div class="hour">9:00am – 11:00pm</div>
+          </div>
+        </div>
+        <div class="map-box"><span>2200 Danforth Ave, Toronto</span></div>
+      </div>
+      <div class="c-form">
+        <h3>Say Hello</h3>
+        <div class="fg"><label class="fl">Your Name</label><input type="text" class="fi" placeholder="John Smith"></div>
+        <div class="fg"><label class="fl">Email Address</label><input type="email" class="fi" placeholder="john@example.com"></div>
+        <div class="fg"><label class="fl">Subject</label><input type="text" class="fi" placeholder="Reservation, event, general inquiry..."></div>
+        <div class="fg"><label class="fl">Message</label><textarea class="ft" placeholder="Tell us what's on your mind..."></textarea></div>
+        <button class="btn btn-gold" style="width:100%;justify-content:center;" onclick="submitForm(this)">Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-stripe"></div>
+  <div class="footer-stripe-bold"></div>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="f-logo">CAFE <span>JUVENTUS</span></div>
+      <ul class="f-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#coffee">Menu</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#shop">Shop</a></li>
+      </ul>
+      <div class="f-copy">© 2026 Cafe Juventus · Toronto · Fino Alla Fine</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cur = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top  = e.clientY + 'px';
+});
+document.querySelectorAll('a,button,.coffee-card,.shop-card,.ev-card,.food-item,.g-item').forEach(el => {
+  el.addEventListener('mouseenter', () => cur.classList.add('big'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+});
+
+// MOBILE
+function toggleMob() { document.getElementById('mobMenu').classList.toggle('open'); }
+function closeMob()  { document.getElementById('mobMenu').classList.remove('open'); }
+
+// FADE IN
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => { if(e.isIntersecting) setTimeout(()=>e.target.classList.add('vis'),80); });
+},{ threshold:.07 });
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+// CART
+function addToCart(){
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// FORM
+function submitForm(btn){
+  const orig=btn.textContent;
+  btn.textContent='Message Sent ✓';
+  btn.style.background='transparent';
+  btn.style.color='var(--gold)';
+  btn.style.border='1px solid var(--gold)';
+  setTimeout(()=>{btn.textContent=orig;btn.style.background='';btn.style.color='';btn.style.border='';},3000);
+}
+
+// NAV ACTIVE
+const secs=document.querySelectorAll('section[id]');
+const nls=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let c='';
+  secs.forEach(s=>{if(window.scrollY>=s.offsetTop-100)c=s.id;});
+  nls.forEach(l=>{
+    const isActive=l.getAttribute('href')==='#'+c;
+    l.style.color=isActive?'var(--white)':'';
+  });
+});
+</script>
+</body>
+</html>
